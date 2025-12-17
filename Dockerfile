@@ -4,10 +4,9 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-# Install Chrome runtime dependencies
+# Install Chromium + required libs
 RUN apt-get update && apt-get install -y \
-  wget \
-  gnupg \
+  chromium \
   ca-certificates \
   fonts-liberation \
   fonts-ipafont-gothic \
@@ -35,28 +34,18 @@ RUN apt-get update && apt-get install -y \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Google Chrome (modern key handling)
-RUN wget -qO /usr/share/keyrings/google-linux-signing-keyring.gpg \
-    https://dl.google.com/linux/linux_signing_key.pub \
-  && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-keyring.gpg] \
-     http://dl.google.com/linux/chrome/deb/ stable main" \
-     > /etc/apt/sources.list.d/google.list \
-  && apt-get update \
-  && apt-get install -y google-chrome-stable \
-  && rm -rf /var/lib/apt/lists/*
-
-# Puppeteer config
+# Tell Puppeteer to use system Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Install Node deps (root-level)
+# Install Node deps
 COPY package*.json ./
 RUN npm ci --only=production
 
-# Copy ALL server source from repo root
+# Copy server source
 COPY . .
 
-# Create non-root user (required for Chrome)
+# Non-root user (required)
 RUN groupadd -r pptruser \
   && useradd -r -g pptruser -G audio,video pptruser \
   && mkdir -p /home/pptruser/Downloads \
