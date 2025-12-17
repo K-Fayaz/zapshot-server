@@ -19,12 +19,9 @@ async function scrapeTweet(url) {
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
             '--disable-extensions',
-            '--disable-gpu',
             '--disable-web-security',
-            '--disable-features=VizDisplayCompositor',
             '--no-first-run',
             '--no-zygote',
-            '--single-process',
             '--disable-background-timer-throttling',
             '--disable-backgrounding-occluded-windows',
             '--disable-renderer-backgrounding',
@@ -46,7 +43,7 @@ async function scrapeTweet(url) {
     try {
         console.log(`[scrapeTweet] Navigating to URL: ${url}`);
         // FIXME: Navigation timeout of 30000 ms exceeded - Fix this error
-        await page.goto(url, { waitUntil: "networkidle2", timeout: 30000 });
+        await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 
         // Wait for the tweet article, but with a timeout
         await page.waitForSelector("article", { timeout: 15000 });
