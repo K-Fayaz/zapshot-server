@@ -49,14 +49,14 @@ RUN wget -qO /usr/share/keyrings/google-linux-signing-keyring.gpg \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
-# Install deps
-COPY server/package*.json ./
+# Install Node deps (root-level)
+COPY package*.json ./
 RUN npm ci --only=production
 
-# Copy server source
-COPY server/ .
+# Copy ALL server source from repo root
+COPY . .
 
-# Non-root user (MANDATORY for Chrome stability)
+# Create non-root user (required for Chrome)
 RUN groupadd -r pptruser \
   && useradd -r -g pptruser -G audio,video pptruser \
   && mkdir -p /home/pptruser/Downloads \
