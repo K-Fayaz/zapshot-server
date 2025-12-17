@@ -97,7 +97,7 @@ passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
   callbackURL: process.env.NODE_ENV === 'production' 
-    ? "https://zapshot.in/api/auth/google/callback"
+    ? "https://zapshot-server.onrender.com/api/auth/google/callback"
     : "http://localhost:8080/api/auth/google/callback",
 }, async (accessToken, refreshToken, profile, done) => {
   try {
@@ -130,7 +130,7 @@ const polar = new Polar({
 
 // "http://localhost:5173/screenshot"
 let local ;
-local = process.env.NODE_ENV === 'production' ? "https://zapshot.in/screenshot" : "http://localhost:5173/screenshot";
+local = process.env.NODE_ENV === 'production' ? "https://zapshot-client.vercel.app/screenshot" : "http://localhost:5173/screenshot";
 
 app.post('/api/polar-checkout',async (req,res) => {
     try {
