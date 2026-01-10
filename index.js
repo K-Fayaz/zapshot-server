@@ -97,7 +97,7 @@ passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
   callbackURL: process.env.NODE_ENV === 'production' 
-    ? "https://zapshot-server.onrender.com/api/auth/google/callback"
+    ? "https://zapshot-server-m4wxht3xj-fayazs-projects-07c3232e.vercel.app/api/auth/google/callback"
     : "http://localhost:8080/api/auth/google/callback",
 }, async (accessToken, refreshToken, profile, done) => {
   try {
